@@ -1,0 +1,7 @@
+*.csv
+
+.DS_Store
+
+__pycache__/
+
+*.ext3
