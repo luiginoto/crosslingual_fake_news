@@ -17,7 +17,7 @@ def save_sample(item, save_dir, lang, langs_split_dict, filename):
     if not os.path.exists(file_save_dir):
         os.makedirs(file_save_dir)
     with open(f"{file_save_dir}/{filename}.json", "w") as outfile:
-        json.dump(outdict, outfile)
+        json.dump(outdict, outfile, ensure_ascii=False)
 
 def preprocess_amazon(data_dir, save_dir, train_langs=['en', 'de'], val_langs=['fr'], test_langs=['jp']):
     langs_split_dict = {}
