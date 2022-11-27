@@ -3,6 +3,7 @@ import json
 from xml.etree.cElementTree import iterparse
 import codecs
 import re
+from unicodedata import normalize
 import random
 import argparse
 import shutil
@@ -78,11 +79,12 @@ def preprocess_jd(data_dir, save_dir, data_role='train', subsample=22000):
             if line == '':
                 break
             score = re.sub('(<score>)|(</score>)', '', re.search('<score>.*</score>', line).group(0))
-            content = re.sub('(<content>)|(</content>)', '', re.search('<content>.*</content>', line).group(0))
-            reviews[i] = {}
-            reviews[i]['score'] = score
-            reviews[i]['content'] = content
-            i += 1
+            content = normalize('NFKC', re.sub('(<content>)|(</content>)', '', re.search('<content>.*</content>', line).group(0)))
+            if int(score) in [1, 2, 4, 5]:
+                reviews[i] = {}
+                reviews[i]['score'] = score
+                reviews[i]['content'] = content
+                i += 1
         except:
             continue
 
@@ -111,6 +113,8 @@ def ranker_parse_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
+
+    random.seed(12345)
 
     args = ranker_parse_args()
 
