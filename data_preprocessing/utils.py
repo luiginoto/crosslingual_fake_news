@@ -45,3 +45,18 @@ def save_sample_jd(item, save_dir, data_role, filename):
         os.makedirs(file_save_dir)
     with open(f"{file_save_dir}/{filename}.json", "w", encoding='utf-8') as outfile:
         json.dump(outdict, outfile)# , ensure_ascii=True)
+
+def save_sample_covid(item, save_dir, lang, langs_split_dict, filename):
+    outdict = {}
+    class_name = item['label']
+    outdict["source_sentence"] = "dummy"
+    outdict["target_sentence"] = clean_sentence(item['ref_source']['text'])
+    outdict["source"] = 'MM-COVID'
+    outdict["teacher_encoding"] = [1, 0] if item['label'] == 'fake' else [0, 1]
+    outdict["teacher_name"] = "ground_truth"
+    outdict["target_language"] = lang
+    file_save_dir = f"{save_dir}/{langs_split_dict[lang]}/MM-COVID/{lang}/{class_name}"
+    if not os.path.exists(file_save_dir):
+        os.makedirs(file_save_dir)
+    with open(f"{file_save_dir}/{filename}.json", "w", encoding='utf-8') as outfile:
+        json.dump(outdict, outfile)# , ensure_ascii=True)
