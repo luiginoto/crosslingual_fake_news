@@ -70,7 +70,7 @@ def preprocess_jd(data_dir, save_dir, data_role='train', subsample=22000):
 
 def ranker_parse_args():
     parser = argparse.ArgumentParser(description='Amazon and JD data preprocessing')
-    parser.add_argument('--data_dir_amazon', type=str, default='../../Datasets/amazon_sentiment_polarity/cls-acl10-unprocessed',
+    parser.add_argument('--data_dir_amazon', type=str, default='../../Datasets/amazon_sentiment_polarity',
                         help='location of the unprocessed Amazon dataset')
     parser.add_argument('--data_dir_jd', type=str, default='../../Datasets/jd', help='location of the unprocessed JD dataset')
     parser.add_argument('--save_dir', type=str, default='../datasets/Dataset', help='directory where processed Amazon dataset is saved')
