@@ -10,7 +10,7 @@ import os
 
 if __name__ == "__main__":
     # Combines the arguments, model, data and experiment builders to run an experiment
-    os.environ["DATASET_DIR"] = "/scratch/ln2205/nlp_final_project/meta_learning_multilingual_doc_classification/datasets"
+    os.environ["DATASET_DIR"] = "/scratch/ln2205/nlp_final_project/nlp-project/datasets"
     args, device = get_args()
 
     update_method = args.meta_update_method.lower()
