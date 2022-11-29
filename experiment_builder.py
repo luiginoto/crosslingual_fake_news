@@ -786,5 +786,7 @@ class ExperimentBuilder(object):
 
                             sys.exit()
 
-            print(self.full_task_set_evaluation(epoch=self.epoch, set_name="test"))
+            test_result = self.full_task_set_evaluation(epoch=self.epoch, set_name="test")
+            save_to_json(os.path.join(self.logs_filepath, "test_metrics.json"), test_result)
+            print(test_result)
             # self.evaluate_test_set_using_the_best_models(top_n_models=5)
