@@ -999,6 +999,9 @@ class MetaLearningSystemDataLoader(object):
             seed,
         ) = self.dataset.get_full_task_set(task_name, percentage_train, seed)
 
+        print(f"Number of samples for meta-testing update (support set): {len(train_set_samples)}")
+        print(f"Number of samples for meta-testing evaluation (query set): {len(dev_set_samples)}")
+
         train_mask = torch.ones_like(train_set_samples)
         train_mask = (
             torch.arange(train_mask.size(1))

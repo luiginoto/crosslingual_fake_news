@@ -255,7 +255,7 @@ class ExperimentBuilder(object):
                 train_dataloader, dev_dataloader = self.data.get_finetune_dataloaders(
                     task_name, 0, seed
                 )
-
+            
                 _, best_loss, curr_loss, accuracy = self.model.finetune_epoch(
                     None,
                     self.model.classifier.config,
@@ -772,11 +772,11 @@ class ExperimentBuilder(object):
                                     self.num_epoch_no_improvements
                                 )
                             )
-                            print(
-                                self.full_task_set_evaluation(
-                                    set_name="test", epoch=self.epoch
-                                )
-                            )
+
+                            test_result = self.full_task_set_evaluation(epoch=self.epoch, set_name="test")
+                            save_to_json(os.path.join(self.args.experiment_name, "test_metrics.json"), test_result)
+                            print(test_result)
+                            
                             print(
                                 "train_seed {}, val_seed: {}, at pause time".format(
                                     self.data.dataset.seed["train"],

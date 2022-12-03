@@ -9,3 +9,6 @@ __pycache__/
 datasets/
 
 runs/
+
+amazon_experiment_*
+covid_experiment_*

@@ -6,7 +6,7 @@
   "dataset_name":"MM-COVID",
   "dataset_path":"Dataset",
   "reset_stored_paths":false,
-  "experiment_name":"covid_experiment_crosslingual_foprotomamln_test_hi",
+  "experiment_name":"covid_experiment_crosslingual_foprotomamln_test_it",
   "pretrained_weights":"distilbert-base-multilingual-cased",
   "teacher_dir": "teachers",
   "meta_loss":"ce",

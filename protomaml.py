@@ -254,6 +254,8 @@ class ProtoMAMLFewShotClassifier(MAMLFewShotClassifier):
         epoch,
         train_on_cpu=False,
         writer=None,
+        is_correct=False,
+        return_student_teacher_preds=False
     ):
 
         # if self.classifier is not None:
@@ -375,6 +377,12 @@ class ProtoMAMLFewShotClassifier(MAMLFewShotClassifier):
                     losses = []
                     is_correct_preds = []
 
+                    student_logits_list = []
+                    student_preds_list = []
+
+                    y_true_list = []
+                    teacher_preds_list = []
+
                     if train_on_cpu:
                         self.device = torch.device("cuda")
                         self.classifier.to(self.device)
@@ -389,15 +397,37 @@ class ProtoMAMLFewShotClassifier(MAMLFewShotClassifier):
                             batch = tuple(t.to(self.device) for t in batch)
                             x, mask, y_true = batch
 
-                            loss, is_correct = self.net_forward(
-                                x,
-                                mask=mask,
-                                teacher_unary=y_true,
-                                fast_model=fast_weights,
-                                training=False,
-                                return_nr_correct=True,
-                                num_step=train_step,
-                            )
+                            y_true_list.extend(y_true.tolist())
+
+                            if return_student_teacher_preds:
+                                loss_and_is_correct, student_logits, student_preds, teacher_preds = self.net_forward(
+                                    x,
+                                    mask=mask,
+                                    teacher_unary=y_true,
+                                    fast_model=fast_weights,
+                                    training=False,
+                                    return_nr_correct=True,
+                                    num_step=train_step,
+                                    return_student_teacher_preds=True
+                                )
+
+                                loss, is_correct = loss_and_is_correct
+                                student_logits_list.extend(student_logits.tolist())
+                                student_preds_list.extend(student_preds.tolist())
+                                teacher_preds_list.extend(teacher_preds.tolist())
+
+                            else:
+                                loss, is_correct = self.net_forward(
+                                    x,
+                                    mask=mask,
+                                    teacher_unary=y_true,
+                                    fast_model=fast_weights,
+                                    training=False,
+                                    return_nr_correct=True,
+                                    num_step=train_step,
+                                )
+
+
                             losses.append(loss.item())
                             is_correct_preds.extend(is_correct.tolist())
 
@@ -422,4 +452,9 @@ class ProtoMAMLFewShotClassifier(MAMLFewShotClassifier):
                                 ),
                             ),
                         )
+
+                    if return_student_teacher_preds:
+                        return names_weights_copy, best_loss, avg_loss, accuracy, is_correct_preds, student_logits_list, student_preds_list, y_true_list, teacher_preds_list
+
+
                     return names_weights_copy, best_loss, avg_loss, accuracy

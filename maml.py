@@ -189,6 +189,7 @@ class MAMLFewShotClassifier(FewShotClassifier):
         return_nr_correct=False,
         mask=None,
         task_name="",
+        return_student_teacher_preds=False
     ):
         student_logits = self.classifier(
             input_ids=x, attention_mask=mask, num_step=num_step, params=fast_model
@@ -205,6 +206,12 @@ class MAMLFewShotClassifier(FewShotClassifier):
 
         if set_kl_loss:
             self.meta_loss = "kl"
+        
+        if return_student_teacher_preds:
+            _, student_preds = student_logits.max(1)
+            _, teacher_preds = teacher_unary.max(1)
+
+            return loss, student_logits, student_preds, teacher_preds
 
         return loss
 
@@ -364,7 +371,7 @@ class MAMLFewShotClassifier(FewShotClassifier):
         task_name,
         epoch,
         train_on_cpu=False,
-        writer=None,
+        writer=None
     ):
         """
         Finetunes the meta-learned classifier on a dataset
@@ -501,4 +508,6 @@ class MAMLFewShotClassifier(FewShotClassifier):
                                 ),
                             ),
                         )
+
+
                     return names_weights_copy, best_loss, avg_loss, accuracy
