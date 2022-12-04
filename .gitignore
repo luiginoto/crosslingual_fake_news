@@ -7,8 +7,12 @@ __pycache__/
 *.ext3
 
 datasets/
+datasets_*/
 
 runs/
 
 amazon_experiment_*
 covid_experiment_*
+
+test_results.json
+roc_curve.pdf
