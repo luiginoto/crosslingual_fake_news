@@ -13,7 +13,7 @@ import seaborn as sns
 
 
 
-def meta_test_preds(experiment_name):
+def meta_test_preds(experiment_name, num_seeds=1):
 
     langs = {'en', 'es', 'it', 'pt', 'fr', 'hi'}
 
@@ -40,7 +40,7 @@ def meta_test_preds(experiment_name):
                 model_idx="best",
             )
 
-    seeds = [42 + i for i in range(2)] # range(args.num_evaluation_seeds)]
+    seeds = [42 + i for i in range(num_seeds)]
 
     test_scores = {}
     losses = []
